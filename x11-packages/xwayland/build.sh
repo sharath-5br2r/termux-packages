@@ -3,6 +3,7 @@ TERMUX_PKG_DESCRIPTION="Wayland X11 server"
 TERMUX_PKG_LICENSE="MIT"
 TERMUX_PKG_MAINTAINER="@termux"
 TERMUX_PKG_VERSION="24.1.12"
+TERMUX_PKG_REVISION=1
 TERMUX_PKG_SRCURL=https://xorg.freedesktop.org/releases/individual/xserver/xwayland-${TERMUX_PKG_VERSION}.tar.xz
 TERMUX_PKG_SHA256=6df02c511b92c1b9848734d9d1b03a4c24f8375ba3cada44e9684a21b5f78e21
 TERMUX_PKG_AUTO_UPDATE=true
@@ -29,6 +30,9 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -Dipv6=true
 -Dsha1=libcrypto
 -Ddefault_font_path=$TERMUX_PREFIX/share/fonts
+-Dxkb_dir=$TERMUX_PREFIX/share/xkeyboard-config-2
+-Dxkb_output_dir=$TERMUX_PREFIX/tmp
+-Dxkb_bin_dir=$TERMUX_PREFIX/bin
 "
 
 # Remove files conflicting with xorg-server:
