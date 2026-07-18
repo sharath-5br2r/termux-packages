@@ -3,9 +3,9 @@ TERMUX_PKG_DESCRIPTION="Ambitious Vim-fork focused on extensibility and agility 
 TERMUX_PKG_LICENSE="Apache-2.0, VIM License"
 TERMUX_PKG_LICENSE_FILE="LICENSE.txt"
 TERMUX_PKG_MAINTAINER="Joshua Kahn <tom@termux.dev>"
-TERMUX_PKG_VERSION="0.12.0~dev-2623+g08c64bb036"
+TERMUX_PKG_VERSION="0.13.0~dev-980+g3a7989f4f4"
 TERMUX_PKG_SRCURL="https://github.com/neovim/neovim/archive/${TERMUX_PKG_VERSION##*+g}.tar.gz"
-TERMUX_PKG_SHA256=451b4d126f0fce84b3e7cbacae9cf2914b714fdaecc76c42fb640a5fbf710064
+TERMUX_PKG_SHA256=77805a473ac69ba1fe79174b9abb92877eb99d19582b1843c04041e354114df3
 TERMUX_PKG_REPOLOGY_METADATA_VERSION="${TERMUX_PKG_VERSION%%~*}"
 TERMUX_PKG_DEPENDS="libandroid-support, libiconv, libmsgpack, libunibilium, libuv, libvterm (>= 1:0.3-0), lua51-lpeg, luajit, luv, tree-sitter, tree-sitter-parsers, utf8proc"
 TERMUX_PKG_BREAKS="neovim"
@@ -20,10 +20,6 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -DLUAJIT_INCLUDE_DIR=$TERMUX_PREFIX/include/luajit-2.1
 -DLPEG_LIBRARY=$TERMUX_PREFIX/lib/liblpeg-5.1.so
 -DCOMPILE_LUA=OFF
-"
-
-# Available since 0.12.0~dev-2459+g62135f5a57
-TERMUX_PKG_EXTRA_CONFIGURE_ARGS+="
 -DNLUA0_HOST_PRG=$TERMUX_PKG_HOSTBUILD_DIR/libnlua0.so
 -DNVIM_HOST_PRG=$TERMUX_PKG_HOSTBUILD_DIR/nvim
 "
@@ -43,7 +39,7 @@ termux_pkg_auto_update() {
 			echo "https://api.github.com/repos/neovim/neovim/releases/tags/nightly"
 			echo "curl response:"
 			jq '.' <<< "$response"
-		} >&2
+		} | tee "${GITHUB_STEP_SUMMARY:-/dev/null}" >&2
 		return
 	elif [[ "${commit::10}" == "${TERMUX_PKG_VERSION##*+g}" ]]; then
 		echo "INFO: No update needed. Already at version '${TERMUX_PKG_VERSION}'."
@@ -51,6 +47,19 @@ termux_pkg_auto_update() {
 	fi
 
 	latest_nightly="$(grep --max-count=1 -oP "$TERMUX_PKG_UPDATE_VERSION_REGEXP" < <(jq -r '.body' <<< "$response"))"
+
+	if ! sed -E "${TERMUX_PKG_UPDATE_VERSION_SED_REGEXP}" <<< "${latest_nightly}"; then
+		{
+			echo "Failed to apply sed substution '${TERMUX_PKG_UPDATE_VERSION_SED_REGEXP}' to received version."
+			echo ""
+			echo "Current version: $TERMUX_PKG_VERSION"
+			echo "Fetched version: ${latest_nightly#v}"
+			echo ""
+			echo "curl response:"
+			jq '.target_commitish, .body' <<< "$response"
+		} | tee "${GITHUB_STEP_SUMMARY:-/dev/null}" >&2
+	fi
+
 	# We already filtered the version, so unset the regex to avoid reapplying it.
 	unset TERMUX_PKG_UPDATE_VERSION_REGEXP
 
@@ -78,21 +87,6 @@ termux_step_host_build() {
 
 	make distclean
 	rm -Rf build/
-}
-
-termux_step_pre_configure() {
-	# neovim has a weird CMake file that attempts to preprocess generated headers
-	# using the NDK Clang, but without ever adding the necessary --target argument
-	# to its commands for cross-preprocessing, so that must be done manually
-	local target="$CCTERMUX_HOST_PLATFORM"
-	if [[ "$TERMUX_ARCH" == "arm" ]]; then
-		target="armv7a-linux-androideabi$TERMUX_PKG_API_LEVEL"
-	fi
-	patch="$TERMUX_PKG_BUILDER_DIR/add-target-to-gen-preprocessing.diff"
-	echo "Applying patch: $(basename "$patch")"
-	test -f "$patch" && sed \
-		-e "s%\@TARGET\@%${target}%g" \
-		"$patch" | patch --silent -p1
 }
 
 termux_step_post_make_install() {

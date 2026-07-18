@@ -2,9 +2,9 @@ TERMUX_PKG_HOMEPAGE=https://libwebsockets.org
 TERMUX_PKG_DESCRIPTION="Lightweight C websockets library"
 TERMUX_PKG_LICENSE="LGPL-2.0"
 TERMUX_PKG_MAINTAINER="@termux"
-TERMUX_PKG_VERSION="4.5.7"
+TERMUX_PKG_VERSION="4.5.8"
 TERMUX_PKG_SRCURL=https://github.com/warmcat/libwebsockets/archive/refs/tags/v${TERMUX_PKG_VERSION}.tar.gz
-TERMUX_PKG_SHA256=d08df7634da0a377a4e077400ed6b2d1d25cf0b239e89397cd39432c5eb437ac
+TERMUX_PKG_SHA256=b6ade658f4af3a823d0dc806ae5ef0623f0f4f5e2aeb895a0f77c4783840c30e
 TERMUX_PKG_DEPENDS="openssl, libcap, libuv, zlib"
 TERMUX_PKG_BREAKS="libwebsockets-dev"
 TERMUX_PKG_REPLACES="libwebsockets-dev"
@@ -19,7 +19,8 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 "
 TERMUX_PKG_RM_AFTER_INSTALL="lib/pkgconfig/libwebsockets_static.pc"
 TERMUX_PKG_AUTO_UPDATE=true
-TERMUX_PKG_UPDATE_TAG_TYPE="newest-tag"
+TERMUX_PKG_UPDATE_VERSION_REGEXP="\d+\.\d+\.\d+"
+TERMUX_PKG_UPDATE_TAG_TYPE="latest-regex"
 
 termux_step_post_get_source() {
 	# Do not forget to bump revision of reverse dependencies and rebuild them

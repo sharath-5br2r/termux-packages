@@ -3,10 +3,9 @@ TERMUX_PKG_DESCRIPTION="Magical shell history"
 TERMUX_PKG_LICENSE="MIT"
 TERMUX_PKG_LICENSE_FILE="../../LICENSE"
 TERMUX_PKG_MAINTAINER="@termux"
-TERMUX_PKG_VERSION="18.12.1"
-TERMUX_PKG_REVISION=1
+TERMUX_PKG_VERSION="18.17.1"
 TERMUX_PKG_SRCURL="https://github.com/atuinsh/atuin/archive/refs/tags/v${TERMUX_PKG_VERSION}.tar.gz"
-TERMUX_PKG_SHA256=8643a7df1e366e9ad3134514b9bcaf4d6440accb13c64340ec9ec1923d58eb6e
+TERMUX_PKG_SHA256=851c3f4870e4bd181b98d2dae60b9fd76ef30f05f16a85efa21ac7e7cf294862
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_BUILD_IN_SRC=true
 
@@ -41,7 +40,6 @@ termux_step_pre_configure() {
 	echo "" >> Cargo.toml
 	echo '[patch.crates-io]' >> Cargo.toml
 	echo 'rustls-platform-verifier = { path = "./vendor/rustls-platform-verifier" }' >> Cargo.toml
-
 }
 
 termux_step_post_make_install() {

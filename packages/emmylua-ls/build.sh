@@ -2,9 +2,9 @@ TERMUX_PKG_HOMEPAGE=https://github.com/EmmyLuaLs/emmylua-analyzer-rust
 TERMUX_PKG_DESCRIPTION="Emmy Lua Language Server coded in Rust"
 TERMUX_PKG_LICENSE="MIT"
 TERMUX_PKG_MAINTAINER="Steven Xu @stevenxxiu"
-TERMUX_PKG_VERSION="0.21.0"
+TERMUX_PKG_VERSION="0.24.0"
 TERMUX_PKG_SRCURL=https://github.com/EmmyLuaLs/emmylua-analyzer-rust/archive/refs/tags/${TERMUX_PKG_VERSION}.tar.gz
-TERMUX_PKG_SHA256=5df0f7894b8b17ab7773625c0f2ba339aabc459995d530bedde53c3499d9d179
+TERMUX_PKG_SHA256=ad565f4c49f7fb29219bd833860d53ec8b7ce6bc37ad4c6702e05636d2bbace2
 TERMUX_PKG_BUILD_IN_SRC=true
 TERMUX_PKG_AUTO_UPDATE=true
 
