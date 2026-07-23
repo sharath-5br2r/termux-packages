@@ -3,6 +3,7 @@ TERMUX_PKG_DESCRIPTION="Qt component to allow applications to make use of the Wa
 TERMUX_PKG_LICENSE="LGPL-2.0"
 TERMUX_PKG_MAINTAINER="@termux"
 TERMUX_PKG_VERSION="6.7.3"
+TERMUX_PKG_REVISION=1
 TERMUX_PKG_SRCURL=https://download.kde.org/stable/plasma/${TERMUX_PKG_VERSION}/layer-shell-qt-${TERMUX_PKG_VERSION}.tar.xz
 TERMUX_PKG_SHA256=51924fa14d05320eacef8defea51895c96117bc89dd709e74536dd8ecdfb4581
 TERMUX_PKG_AUTO_UPDATE=true
