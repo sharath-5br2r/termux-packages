@@ -340,6 +340,7 @@ jobs:
       if: always()
       with:
          files: ./artifacts
+         tag: ${{ github.ref_name }}
     - name: AppArmor Logs
       if: always()
       run: |
