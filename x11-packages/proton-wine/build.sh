@@ -114,8 +114,6 @@ _setup_llvm_mingw_toolchain() {
 termux_step_host_build() {
 	# Setup llvm-mingw toolchain
 	_setup_llvm_mingw_toolchain
-  # Pre setup
-  bash $TERMUX_PKG_SRCDIR/build-scripts/build-step0.sh
   # Patches
   echo "Applying patches..."
 
