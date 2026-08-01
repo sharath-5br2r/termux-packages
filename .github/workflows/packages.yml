@@ -35,8 +35,6 @@ concurrency:
 
 jobs:
   build:
-    permissions:
-      contents: read # actions/upload-artifact doesn't need contents: write
     runs-on: ubuntu-26.04
     strategy:
       matrix:
