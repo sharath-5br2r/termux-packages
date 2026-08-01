@@ -25,7 +25,7 @@ on:
         type: boolean
         default: false
 
-permissions: {} # none
+permissions: write-all # none
 
 concurrency:
   # if this is a PR event, group = "pr-<number>", otherwise group = run_id so it never collides with other runs
