@@ -14,6 +14,7 @@ TERMUX_PKG_BUILD_IN_SRC=true
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_UPDATE_VERSION_REGEXP="\d+\.\d+\.\d+"
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
+--enable-qt
 --disable-static
 --disable-live555
 --disable-dc1394
