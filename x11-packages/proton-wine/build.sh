@@ -208,9 +208,10 @@ termux_step_host_build() {
         echo "SKIPPED: $patch does not apply cleanly"
       fi
     done
-	
+	pushd $TERMUX_PKG_SRCDIR
     git apply "$TERMUX_PKG_SRCDIR/android/patches/server_protocol.def.patch"
     ./$TERMUX_PKG_SRCDIR/autogen.sh
+	popd
 	# Make host wine-tools
 	"$TERMUX_PKG_SRCDIR/configure" ${TERMUX_PKG_EXTRA_HOSTBUILD_CONFIGURE_ARGS}
 	make -j "$TERMUX_PKG_MAKE_PROCESSES" __tooldeps__ nls/all
