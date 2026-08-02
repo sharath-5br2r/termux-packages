@@ -6,7 +6,7 @@ TERMUX_PKG_VERSION=149.0.7827.155
 TERMUX_PKG_SRCURL=https://commondatastorage.googleapis.com/chromium-browser-official/chromium-$TERMUX_PKG_VERSION-lite.tar.xz
 TERMUX_PKG_SHA256=4e39fd0ae3ad64fd4bff6a523d94fe5e2917ad51a7f46a73c84a5736d9dda862
 TERMUX_PKG_DEPENDS="atk, cups, dbus, fontconfig, gtk3, qt6-qtbase, krb5, libc++, libevdev, libxkbcommon, libminizip, libnss, libx11, libwayland, libwayland-protocols, mesa, openssl, pango, pipewire, pulseaudio, zlib"
-TERMUX_PKG_BUILD_DEPENDS="chromium-host-tools, libffi-static, qt6-qtbase-cross-tools"
+TERMUX_PKG_BUILD_DEPENDS="chromium-host-tools, libffi-static, qt6-qtbase-cross-tools, libwayland-cross-scanner"
 # TODO: Split chromium-common and chromium-headless
 # TERMUX_PKG_DEPENDS+=", chromium-common"
 # TERMUX_PKG_SUGGESTS="chromium-headless, chromium-driver"
