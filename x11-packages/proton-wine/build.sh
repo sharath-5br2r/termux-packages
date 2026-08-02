@@ -210,7 +210,7 @@ termux_step_host_build() {
     done
 	pushd $TERMUX_PKG_SRCDIR
     git apply "$TERMUX_PKG_SRCDIR/android/patches/server_protocol.def.patch"
-    ./$TERMUX_PKG_SRCDIR/autogen.sh
+    ./autogen.sh
 	popd
 	# Make host wine-tools
 	"$TERMUX_PKG_SRCDIR/configure" ${TERMUX_PKG_EXTRA_HOSTBUILD_CONFIGURE_ARGS}
