@@ -8,7 +8,7 @@ TERMUX_PKG_REVISION=3
 TERMUX_PKG_SRCURL=https://github.com/mpv-player/mpv/archive/refs/tags/v${TERMUX_PKG_VERSION}.tar.gz
 TERMUX_PKG_SHA256=ee21092a5ee427353392360929dc64645c54479aefdb5babc5cfbb5fad626209
 TERMUX_PKG_AUTO_UPDATE=false
-TERMUX_PKG_DEPENDS="alsa-lib, ffmpeg, jack, libandroid-glob, libandroid-shmem, libarchive, libass, libbluray, libcaca, libdrm, libdvdnav, libiconv, libjpeg-turbo, libplacebo, libsixel, libuchardet, libx11, libxext, libxinerama, libxpresent, libxrandr, libxss, libzimg, littlecms, luajit, openal-soft, opengl, pipewire, pulseaudio, rubberband, vulkan-icd, zlib"
+TERMUX_PKG_DEPENDS="alsa-lib, ffmpeg, jack, libandroid-glob, libandroid-shmem, libarchive, libass, libbluray, libcaca, libdrm, libdvdnav, libiconv, libjpeg-turbo, libplacebo, libsixel, libuchardet, libx11, libxext, libxinerama, libxpresent, libxrandr, libxss, libzimg, libwayland, littlecms, luajit, openal-soft, opengl, pipewire, pulseaudio, rubberband, vulkan-icd, zlib"
 TERMUX_PKG_BUILD_DEPENDS="vulkan-headers, vulkan-loader-generic"
 TERMUX_PKG_CONFLICTS="mpv"
 TERMUX_PKG_REPLACES="mpv"
@@ -24,6 +24,11 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -Dvaapi=disabled
 -Dvulkan=enabled
 -Dxv=disabled
+-Degl-wayland=enabled
+-Degl-x11=enabled
+-Dwayland=enabled
+-Daaudio=enabled
+-Dpipewire=enabled
 -Dandroid-media-ndk=disabled
 "
 
