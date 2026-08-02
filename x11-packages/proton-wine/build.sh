@@ -244,6 +244,8 @@ termux_step_pre_configure() {
 		chmod +x "$TERMUX_PKG_TMPDIR/bin/x86_64-linux-android-clang"
 		export PATH="$TERMUX_PKG_TMPDIR/bin:$PATH"
 	fi
+	git apply "$TERMUX_PKG_SRCDIR/android/patches/server_protocol.def.patch"
+    ./$TERMUX_PKG_SRCDIR/autogen.sh
 }
 
 termux_step_make() {
