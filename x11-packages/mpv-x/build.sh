@@ -57,6 +57,7 @@ termux_step_pre_configure() {
 	LDFLAGS+=" -landroid-glob -landroid-shmem"
 	sed -i "s/aaudio_opt = get_option('aaudio').require(features\['android\'])/aaudio_opt = get_option('aaudio')/" "${TERMUX_PKG_SRCDIR}/meson.build"
 	sed -i "s/host_machine.system() == 'android'/false/" "${TERMUX_PKG_SRCDIR}/meson.build"
+	cat $TERMUX_PKG_SRCDIR/meson.build
 }
 
 termux_step_post_make_install() {
