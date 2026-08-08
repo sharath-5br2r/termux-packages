@@ -45,8 +45,8 @@ termux_step_post_get_source() {
 
 # shellcheck disable=SC2031
 termux_step_pre_configure() {
-    # Our aaudio sink module needs libaaudio.so from a later android api version:
-	if [ $TERMUX_PKG_API_LEVEL -lt 26 ]; then
+    # Adapted code from pulseaudio package 
+ap	if [ $TERMUX_PKG_API_LEVEL -lt 26 ]; then
 		local _libdir="$TERMUX_PKG_TMPDIR/libaaudio"
 		rm -rf "${_libdir}"
 		mkdir -p "${_libdir}"
@@ -55,6 +55,7 @@ termux_step_pre_configure() {
 		LDFLAGS+=" -L${_libdir}"
 	fi
 	LDFLAGS+=" -landroid-glob"
+	# Remove android check for aaudio build
 	sed -i "s/aaudio_opt = get_option('aaudio').require(features\['android'\])/aaudio_opt = get_option('aaudio')/" "${TERMUX_PKG_SRCDIR}/meson.build"
 	sed -i "s/host_machine.system() == 'android'/false/" "${TERMUX_PKG_SRCDIR}/meson.build"
 
