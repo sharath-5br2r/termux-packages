@@ -338,7 +338,7 @@ jobs:
       uses: softprops/action-gh-release@v3
       if: always()
       with:
-         files: ./artifacts
+         files: ./artifacts/*
          tag_name: ${{ github.ref_name }}
     - name: AppArmor Logs
       if: always()
