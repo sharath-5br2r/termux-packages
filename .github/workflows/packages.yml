@@ -332,7 +332,7 @@ jobs:
       uses: softprops/action-gh-release@v3
       if: always()
       with:
-         files: ./artifacts/*
+         files: ./debs/*
          tag_name: ${{ github.ref_name }}
     - name: Store *.deb files
       if: always()
