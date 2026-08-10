@@ -348,7 +348,7 @@ jobs:
       uses: softprops/action-gh-release@v3
       with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          files: ./debs
+          files: ./debs/*
           name: Build No. ${{ steps.version.outputs.NEXT_VER_CODE }}
           tag_name: ${{ steps.version.outputs.NEXT_VER_CODE }}
           overwrite_files: true
