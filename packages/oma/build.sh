@@ -2,9 +2,9 @@ TERMUX_PKG_HOMEPAGE=https://aosc.io/oma
 TERMUX_PKG_DESCRIPTION="oma is an attempt at reworking APT's interface"
 TERMUX_PKG_LICENSE="GPL-3.0"
 TERMUX_PKG_MAINTAINER="@termux"
-TERMUX_PKG_VERSION="1.25.2"
+TERMUX_PKG_VERSION="1.26.6"
 TERMUX_PKG_SRCURL="https://github.com/AOSC-Dev/oma/archive/refs/tags/v${TERMUX_PKG_VERSION}.tar.gz"
-TERMUX_PKG_SHA256=2dee1f294bf857445e090efdeb6949d75d5171338bc2062b615d7151267b7a08
+TERMUX_PKG_SHA256=1f6e8e74bed5120030a37cd914766067bc2a02904b0a599e6ca56fae416ed84d
 TERMUX_PKG_DEPENDS="libnettle, apt"
 TERMUX_PKG_RECOMMENDS="ripgrep"
 TERMUX_PKG_BUILD_IN_SRC=true
@@ -70,5 +70,11 @@ termux_step_create_debscripts() {
 		COMPLETE=bash oma > ${TERMUX_PREFIX}/share/bash-completion/completions/oma.bash
 		COMPLETE=zsh oma > ${TERMUX_PREFIX}/share/zsh/site-functions/_oma
 		COMPLETE=fish oma > ${TERMUX_PREFIX}/share/fish/vendor_completions.d/oma.fish
+		LOCALE=\$(/system/bin/getprop persist.sys.locale 2>/dev/null || echo "C")
+		case "\$LOCALE" in
+		zh-CN) LANG=zh_CN.UTF-8 oma generate-manpages --path $TERMUX_PREFIX/share/man/man1/ ;;
+		zh-TW) LANG=zh_TW.UTF-8 oma generate-manpages --path $TERMUX_PREFIX/share/man/man1/ ;;
+		*) LANG=C oma generate-manpages --path $TERMUX_PREFIX/share/man/man1/ ;;
+		esac
 	EOF
 }

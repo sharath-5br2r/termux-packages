@@ -3,12 +3,13 @@ TERMUX_PKG_DESCRIPTION="Terminal multiplexer with TUI window manager and multi-p
 TERMUX_PKG_LICENSE="MIT"
 TERMUX_PKG_LICENSE_FILE="LICENSE"
 TERMUX_PKG_MAINTAINER="@termux"
-TERMUX_PKG_VERSION="2026.04.11"
-TERMUX_PKG_SRCURL=https://github.com/directvt/vtm/archive/refs/tags/v${TERMUX_PKG_VERSION}.tar.gz
-TERMUX_PKG_SHA256=201ec65732c17d4ed6222e4ddee5eba4d877173c6f647c22e1ca38af42f20ad8
+TERMUX_PKG_VERSION="2026.07.22"
+TERMUX_PKG_SRCURL="https://github.com/directvt/vtm/archive/refs/tags/v${TERMUX_PKG_VERSION}.tar.gz"
+TERMUX_PKG_SHA256=aee65f50ad59ec25e0ed50c2e97daecaa8fa415c2d791c8f6bdec06f72137e83
 TERMUX_PKG_DEPENDS="freetype, harfbuzz, libc++, lua54, lunasvg"
-TERMUX_PKG_BUILD_DEPENDS="libandroid-spawn"
+TERMUX_PKG_BUILD_DEPENDS="libandroid-spawn, stb"
 TERMUX_PKG_AUTO_UPDATE=true
+TERMUX_PKG_EXTRA_CONFIGURE_ARGS="-DSTB_INCLUDE_DIR=$TERMUX__PREFIX__INCLUDE_DIR/stb"
 
 termux_step_pre_configure() {
 	CXXFLAGS+=" -pthread"

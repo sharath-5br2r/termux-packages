@@ -2,7 +2,7 @@ TERMUX_PKG_HOMEPAGE=https://emscripten.org
 TERMUX_PKG_DESCRIPTION="Emscripten: An LLVM-to-WebAssembly Compiler"
 TERMUX_PKG_LICENSE="MIT"
 TERMUX_PKG_MAINTAINER="@termux"
-TERMUX_PKG_VERSION="5.0.5"
+TERMUX_PKG_VERSION="6.0.4"
 TERMUX_PKG_SRCURL=git+https://github.com/emscripten-core/emscripten
 TERMUX_PKG_GIT_BRANCH=${TERMUX_PKG_VERSION}
 TERMUX_PKG_DEPENDS="nodejs-lts | nodejs, python"
@@ -16,27 +16,38 @@ TERMUX_PKG_AUTO_UPDATE=true
 # refer termux_step_post_get_source and termux_step_post_massage
 TERMUX_PKG_RM_AFTER_INSTALL="
 opt/emscripten-llvm/bin/amdgpu-arch
+opt/emscripten-llvm/bin/clang-apply-replacements
+opt/emscripten-llvm/bin/clang-change-namespace
 opt/emscripten-llvm/bin/clang-check
 opt/emscripten-llvm/bin/clang-cl
 opt/emscripten-llvm/bin/clang-cpp
+opt/emscripten-llvm/bin/clang-doc
 opt/emscripten-llvm/bin/clang-extdef-mapping
 opt/emscripten-llvm/bin/clang-format
 opt/emscripten-llvm/bin/clang-func-mapping
 opt/emscripten-llvm/bin/clang-import-test
+opt/emscripten-llvm/bin/clang-include-cleaner
+opt/emscripten-llvm/bin/clang-include-fixer
 opt/emscripten-llvm/bin/clang-installapi
 opt/emscripten-llvm/bin/clang-linker-wrapper
+opt/emscripten-llvm/bin/clang-move
 opt/emscripten-llvm/bin/clang-nvlink-wrapper
 opt/emscripten-llvm/bin/clang-offload-bundler
 opt/emscripten-llvm/bin/clang-offload-packager
 opt/emscripten-llvm/bin/clang-offload-wrapper
 opt/emscripten-llvm/bin/clang-pseudo
+opt/emscripten-llvm/bin/clang-query
 opt/emscripten-llvm/bin/clang-refactor
 opt/emscripten-llvm/bin/clang-rename
+opt/emscripten-llvm/bin/clang-reorder-fields
 opt/emscripten-llvm/bin/clang-repl
+opt/emscripten-llvm/bin/clang-ssaf-analyzer
 opt/emscripten-llvm/bin/clang-ssaf-format
 opt/emscripten-llvm/bin/clang-ssaf-linker
 opt/emscripten-llvm/bin/clang-sycl-linker
+opt/emscripten-llvm/bin/clang-tidy
 opt/emscripten-llvm/bin/diagtool
+opt/emscripten-llvm/bin/find-all-symbols
 opt/emscripten-llvm/bin/git-clang-format
 opt/emscripten-llvm/bin/hmaptool
 opt/emscripten-llvm/bin/llvm-dlltool
@@ -48,8 +59,11 @@ opt/emscripten-llvm/bin/llvm-ml64
 opt/emscripten-llvm/bin/llvm-pdbutil
 opt/emscripten-llvm/bin/llvm-profgen
 opt/emscripten-llvm/bin/llvm-rc
+opt/emscripten-llvm/bin/modularize
 opt/emscripten-llvm/bin/nvptx-arch
 opt/emscripten-llvm/bin/offload-arch
+opt/emscripten-llvm/bin/pp-trace
+opt/emscripten-llvm/bin/run-clang-tidy
 opt/emscripten-llvm/lib/libclang.so*
 opt/emscripten-llvm/share
 opt/emscripten/LICENSE
@@ -57,13 +71,13 @@ opt/emscripten/LICENSE
 
 # https://github.com/emscripten-core/emscripten/issues/11362
 # can switch to stable LLVM to save space once above is fixed
-_LLVM_COMMIT=9e516f5c583a4f5beabe5591018306a2d1120235
-_LLVM_TGZ_SHA256=b1becde79ed90263de2ca875c266fe9e6109399a90ec3af9db4b53c67607c16c
+_LLVM_COMMIT=c050c487e9edb97ef44f53cb29fe1d8bcddb8f76
+_LLVM_TGZ_SHA256=7659966dcc56a39592420cb90e4d1e382c34fe16a4231974c7df4ecc4d3ae783
 
 # https://github.com/emscripten-core/emscripten/issues/12252
 # upstream says better bundle the right binaryen revision for now
-_BINARYEN_COMMIT=6c70e2caa4b559f9fc9714d535b2986a05815fb0
-_BINARYEN_TGZ_SHA256=d9b01811e697335a163dabea73247a4692a87b1113645adbd85436991fc3d91f
+_BINARYEN_COMMIT=bbeae83f84559bae4d5bfd5207a23dfbbb6495c5
+_BINARYEN_TGZ_SHA256=9431a044262f1ddb74a4bae149241338bf00c5e2b99e0ffd9a826711e913419f
 
 # https://github.com/emscripten-core/emsdk/blob/main/emsdk.py
 # https://chromium.googlesource.com/emscripten-releases/+/refs/heads/main/src/build.py
@@ -80,7 +94,7 @@ _LLVM_BUILD_ARGS="
 -DLLVM_ENABLE_LIBPFM=OFF
 -DLLVM_ENABLE_LIBXML2=OFF
 -DLLVM_ENABLE_LTO=Thin
--DLLVM_ENABLE_PROJECTS=clang;lld
+-DLLVM_ENABLE_PROJECTS=clang;clang-tools-extra;lld
 -DLLVM_INCLUDE_BENCHMARKS=OFF
 -DLLVM_INCLUDE_EXAMPLES=OFF
 -DLLVM_INCLUDE_TESTS=OFF
@@ -232,7 +246,7 @@ termux_step_host_build() {
 		-G Ninja \
 		-S "${TERMUX_PKG_CACHEDIR}/llvm-project-${_LLVM_COMMIT}/llvm" \
 		-DCMAKE_BUILD_TYPE=Release \
-		-DLLVM_ENABLE_PROJECTS=clang \
+		-DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra" \
 		-DLLVM_INCLUDE_BENCHMARKS=OFF \
 		-DLLVM_INCLUDE_EXAMPLES=OFF \
 		-DLLVM_INCLUDE_TESTS=OFF \
@@ -240,7 +254,7 @@ termux_step_host_build() {
 	ninja \
 		-C "${TERMUX_PKG_HOSTBUILD_DIR}" \
 		-j "${TERMUX_PKG_MAKE_PROCESSES}" \
-		llvm-tblgen clang-tblgen
+		llvm-tblgen clang-tblgen clang-tidy-confusable-chars-gen
 }
 
 termux_step_pre_configure() {
