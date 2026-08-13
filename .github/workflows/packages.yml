@@ -328,6 +328,8 @@ jobs:
         
         NEXT_VER_CODE=$(printf "%s%04d" "$YEAR" "$BUILD_COUNT")
         echo "NEXT_VER_CODE=$NEXT_VER_CODE" >> "$GITHUB_OUTPUT"
+      env:
+       GH_TOKEN: $${ secrets.GITHUB_TOKEN }}
     - name: Checksums for built *.deb files
       if: always()
       run: |
