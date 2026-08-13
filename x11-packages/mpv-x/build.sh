@@ -36,7 +36,10 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 termux_step_post_get_source() {
 	# Version guard
 	local ver_m ver_x
-	ver_m="$(. "$TERMUX_SCRIPTDIR/packages/mpv/build.sh"; echo "${TERMUX_PKG_VERSION#*:}")"
+	ver_m="$(
+		. "$TERMUX_SCRIPTDIR/packages/mpv/build.sh"
+		echo "${TERMUX_PKG_VERSION#*:}"
+	)"
 	ver_x="${TERMUX_PKG_VERSION#*:}"
 	if [[ "${ver_m}" != "${ver_x}" ]]; then
 		termux_error_exit "Version mismatch between mpv and mpv-x."
@@ -45,7 +48,7 @@ termux_step_post_get_source() {
 
 # shellcheck disable=SC2031
 termux_step_pre_configure() {
-    # Adapted from pulseaudio package
+	# Adapted from pulseaudio package
 	if [ $TERMUX_PKG_API_LEVEL -lt 26 ]; then
 		local _libdir="$TERMUX_PKG_TMPDIR/libaaudio"
 		rm -rf "${_libdir}"
