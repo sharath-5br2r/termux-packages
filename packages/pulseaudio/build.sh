@@ -5,7 +5,7 @@ TERMUX_PKG_MAINTAINER="@termux"
 TERMUX_PKG_SRCURL=git+https://github.com/pulseaudio/pulseaudio
 TERMUX_PKG_VERSION="17.0"
 TERMUX_PKG_REVISION=3
-TERMUX_PKG_DEPENDS="dbus, libandroid-execinfo, libandroid-glob, libc++, libltdl, libsndfile, libsoxr, libwebrtc-audio-processing, speexdsp"
+TERMUX_PKG_DEPENDS="dbus, libandroid-execinfo, libandroid-glob, libc++, libltdl, libsndfile, libsoxr, libwebrtc-audio-processing, oboe, speexdsp"
 TERMUX_PKG_BREAKS="libpulseaudio-dev, libpulseaudio"
 TERMUX_PKG_REPLACES="libpulseaudio-dev, libpulseaudio"
 # glib is only a runtime dependency of pulseaudio-glib subpackage
@@ -35,6 +35,9 @@ termux_step_pre_configure() {
 	cp $TERMUX_PKG_BUILDER_DIR/module-sles-source.c $TERMUX_PKG_SRCDIR/src/modules/sles
 	mkdir $TERMUX_PKG_SRCDIR/src/modules/aaudio
 	cp $TERMUX_PKG_BUILDER_DIR/module-aaudio-sink.c $TERMUX_PKG_SRCDIR/src/modules/aaudio
+	mkdir $TERMUX_PKG_SRCDIR/src/modules/oboe
+	cp $TERMUX_PKG_BUILDER_DIR/module-oboe-sink.cpp $TERMUX_PKG_SRCDIR/src/modules/oboe
+	cp $TERMUX_PKG_BUILDER_DIR/module-oboe-source.cpp $TERMUX_PKG_SRCDIR/src/modules/oboe
 
 	export LIBS="-landroid-glob -landroid-execinfo"
 
@@ -61,8 +64,10 @@ termux_step_post_make_install() {
 	# so disable hardware detection.
 	sed -i $TERMUX_PREFIX/etc/pulse/default.pa \
 		-e '/^load-module module-detect$/s/^/#/'
-	echo "load-module module-sles-sink" >> $TERMUX_PREFIX/etc/pulse/default.pa
-	echo "#load-module module-aaudio-sink" >> $TERMUX_PREFIX/etc/pulse/default.pa
+	echo "load-module module-sles-sink" >>$TERMUX_PREFIX/etc/pulse/default.pa
+	echo "#load-module module-aaudio-sink" >>$TERMUX_PREFIX/etc/pulse/default.pa
+	echo "#load-module module-oboe-sink" >>$TERMUX_PREFIX/etc/pulse/default.pa
+	echo "#load-module module-oboe-source" >>$TERMUX_PREFIX/etc/pulse/default.pa
 }
 
 termux_step_post_massage() {
@@ -74,15 +79,15 @@ termux_step_post_massage() {
 }
 
 termux_step_create_debscripts() {
-	cat <<- POSTINST_EOF > ./postinst
-	#!$TERMUX_PREFIX/bin/sh
-	echo "If audio does not work on Android 8+, please try this workaround:"
-	echo "    sed -i 's/module-sles-sink/module-aaudio-sink/g' \\\$PREFIX/etc/pulse/default.pa"
+	cat <<-POSTINST_EOF >./postinst
+		#!$TERMUX_PREFIX/bin/sh
+		echo "If audio does not work on Android 8+, please try this workaround:"
+		echo "    sed -i 's/module-sles-sink/module-aaudio-sink/g' \\\$PREFIX/etc/pulse/default.pa"
 	POSTINST_EOF
 
 	chmod 0755 postinst
 
 	if [[ "$TERMUX_PACKAGE_FORMAT" == "pacman" ]]; then
-		echo "post_install" > postupg
+		echo "post_install" >postupg
 	fi
 }
